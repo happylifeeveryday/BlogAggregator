@@ -1,25 +1,21 @@
-package config
+package main
 
 import "fmt"
 
-type State struct {
-	ConfigPtr *Config
-}
-
-type Command struct {
+type command struct {
 	Name      string
 	Arguments []string
 }
 
-type Commands struct {
-	CommandMap map[string]func(*State, Command) error
+type commands struct {
+	CommandMap map[string]func(*state, command) error
 }
 
-func (c *Commands) Register(name string, f func(*State, Command) error) {
+func (c *commands) Register(name string, f func(*state, command) error) {
 	c.CommandMap[name] = f
 }
 
-func (c *Commands) Run(s *State, cmd Command) error {
+func (c *commands) Run(s *state, cmd command) error {
 	value, exists := c.CommandMap[cmd.Name]
 	if !exists {
 		return fmt.Errorf("function %v does not exist", cmd.Name)

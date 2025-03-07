@@ -8,6 +8,10 @@ import (
 	"github.com/happylifeeveryday/BlogAggregator/internal/config"
 )
 
+type state struct {
+	ConfigPtr *config.Config
+}
+
 func main() {
 	cfg, err := config.Read()
 	if err != nil {
@@ -15,25 +19,25 @@ func main() {
 	}
 	fmt.Printf("Read config: %+v\n", cfg)
 
-	state := config.State{
+	std := state{
 		ConfigPtr: &cfg,
 	}
 
-	commands := config.Commands{
-		CommandMap: make(map[string]func(*config.State, config.Command) error),
+	commands := commands{
+		CommandMap: make(map[string]func(*state, command) error),
 	}
 
-	commands.Register("login", config.HandlerLogin)
+	commands.Register("login", handlerLogin)
 
 	if len(os.Args) < 2 {
 		log.Fatalf("not enough arguments were provided")
 	}
 
-	command := config.Command{
+	command := command{
 		Name:      os.Args[1],
 		Arguments: os.Args[2:],
 	}
-	err = commands.Run(&state, command)
+	err = commands.Run(&std, command)
 	if err != nil {
 		log.Fatalf("error login : %v", err)
 	}

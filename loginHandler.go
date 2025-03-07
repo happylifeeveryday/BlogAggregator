@@ -1,8 +1,8 @@
-package config
+package main
 
 import "fmt"
 
-func HandlerLogin(s *State, cmd Command) error {
+func handlerLogin(s *state, cmd command) error {
 	if len(cmd.Arguments) < 1 {
 		return fmt.Errorf("login func missing parameter")
 	}
