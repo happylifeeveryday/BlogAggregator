@@ -100,6 +100,16 @@ func handlerUsers(s *state, cmd command) error {
 	return nil
 }
 
+// agg: fetch feed
+func handlerAgg(s *state, cmd command) error {
+	RSS, err := fetchFeed(context.Background(), "https://www.wagslane.dev/index.xml")
+	if err != nil {
+		return err
+	}
+	fmt.Printf("%+v", *RSS)
+	return nil
+}
+
 type command struct {
 	Name      string
 	Arguments []string
