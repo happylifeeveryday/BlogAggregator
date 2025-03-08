@@ -13,3 +13,6 @@ SELECT id,created_at,updated_at,name from users where name = $1;
 
 -- name: DeleteAllUsers :exec
 DELETE from users;
+
+-- name: GetUsers :many
+SELECT * FROM users order by name;
